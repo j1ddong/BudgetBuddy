@@ -1,0 +1,11 @@
+.authBtn {
+	margin-top: 20px;
+}
+.authInfo {
+	text-align: center;
+	margin: 25px 0;
+}
+.confirmationBtn {
+	max-width: 240px;
+	margin: 0 auto;
+}
