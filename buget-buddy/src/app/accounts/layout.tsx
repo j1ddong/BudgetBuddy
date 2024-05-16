@@ -12,12 +12,9 @@ export default function AuthLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
-			<head></head>
-			<body>
-				<h2 className={styles.appName}>BudgetBuddy</h2>
-				{children}
-			</body>
-		</html>
+		<div>
+			<h2 className={styles.appName}>BudgetBuddy</h2>
+			{children}
+		</div>
 	);
 }
