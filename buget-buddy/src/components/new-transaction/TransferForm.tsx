@@ -6,6 +6,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/utils/supabase/client';
+import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 
 type TransferFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -69,7 +70,7 @@ const TransferForm = ({ accountInfo, type }: TransferFormPropsType) => {
 					key={transferForm.key('account_to')}
 					{...transferForm.getInputProps('account_to')}
 				/>
-				<Button fullWidth type='submit'>
+				<Button className={tranasactionStyle.btn} fullWidth type='submit'>
 					ADD
 				</Button>
 			</form>

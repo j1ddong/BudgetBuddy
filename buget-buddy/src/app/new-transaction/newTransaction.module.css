@@ -1,0 +1,26 @@
+.icon {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 15px auto;
+	justify-content: space-between;
+}
+.icon > div {
+	flex: 1 1 calc(100% / 4);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 5px 0;
+}
+.icon .container {
+	border: 1px solid var(--gray-color);
+	padding: 10px;
+	display: inline-block;
+	border-radius: 15px;
+}
+
+.icon .active {
+	border: 3px solid var(--main-color);
+}
+.btn {
+	margin-top: 20px;
+}

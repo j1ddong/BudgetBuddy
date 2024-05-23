@@ -75,7 +75,7 @@ const TransactionIcons = ({
 			icon: <IconPhoto stroke={2} width={iconSize} height={iconSize} />,
 		},
 		{
-			title: 'Social Life',
+			title: 'SocialLife',
 			icon: <IconFriends stroke={2} width={iconSize} height={iconSize} />,
 		},
 		{

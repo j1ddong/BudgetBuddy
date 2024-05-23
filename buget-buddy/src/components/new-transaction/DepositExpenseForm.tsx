@@ -8,6 +8,7 @@ import {
 import { depositExpenseFormDBInsert } from '@/app/utils/db';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/utils/supabase/client';
+import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 
 type DepositExpenseFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -65,7 +66,7 @@ const DepositExpenseForm = ({
 					key={depositExpenseForm.key('account')}
 					{...depositExpenseForm.getInputProps('account')}
 				/>
-				<Button fullWidth type='submit'>
+				<Button className={tranasactionStyle.btn} fullWidth type='submit'>
 					ADD
 				</Button>
 			</form>
