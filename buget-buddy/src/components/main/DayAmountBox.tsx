@@ -1,68 +1,92 @@
 'use client';
 
-import { NativeSelect, Select } from '@mantine/core';
+import { Select, Text } from '@mantine/core';
 import mainStyles from '@/app/page.module.css';
 import { createClient } from '@/app/utils/supabase/client';
-import { useEffect, useState } from 'react';
-import { fetchDayExpenseTransactions } from '@/app/utils/db';
+import { useEffect, useRef, useState } from 'react';
+import { fetchDayCategoryTransactions } from '@/app/utils/db';
+import { useAccountData } from '@/contexts/accountContext/accountContext.provider';
+import {
+	getCurrency,
+	mapAccountData,
+	mapCategoryTransactionDataAndGetTotalAmount,
+} from '@/app/utils/convertDataStructure';
+import { categoriesList } from '@/app/utils/const';
 
-type DayAmountBoxPropType = {
-	year: number;
-	month: number;
-	day: number;
-};
-
-const categoriesList = ['Expense', 'Deposit', 'Transfer', 'Exchange'];
-
-const DayAmountBox = ({ year, month, day }: DayAmountBoxPropType) => {
+const DayAmountBox = ({ year, month, day }: DayAmountBoxPropsType) => {
 	const supabase = createClient();
 
-	const [category, setCategory] = useState<string | null>('Expense');
+	const { accountData } = useAccountData();
+	const accountInfoRef = useRef<selectDataMapType | null>(null);
+	accountInfoRef.current = mapAccountData(accountData);
+
+	const [account, setAccount] = useState<string | null>(
+		accountInfoRef.current[0].value
+	);
+	const [category, setCategory] = useState<string | null>('expense');
+	const [amount, setAmount] = useState<number>(0);
+	const [currency, setCurrency] = useState<string | undefined>('');
+
 	const [transactionHistory, setTransactionHistory] =
 		useState<transactionHistoryType>([]);
 
 	useEffect(() => {
-		const getDayExpenseTransactions = async () => {
-			const { data: transactionData, error } =
-				await fetchDayExpenseTransactions(supabase, year, month, day);
+		if (accountInfoRef.current) {
+			setCurrency(getCurrency(account, accountData));
 
-			const expenseTransactionHistory: transactionHistoryType = [];
+			const getDayCategoryTransactions = async () => {
+				const { data: transactionData, error } =
+					await fetchDayCategoryTransactions(
+						supabase,
+						{ date: { year, month, day } },
+						account,
+						category
+					);
 
-			transactionData?.forEach((transaction) => {
-				expenseTransactionHistory.push({
-					id: transaction.id,
-					account: transaction.accounts.display_name,
-					category: transaction.categories.display_name,
-					amount: transaction.expense_transactions[0].amount,
-				});
-			});
-			setTransactionHistory(expenseTransactionHistory);
-			console.log('history', expenseTransactionHistory);
-		};
-		getDayExpenseTransactions();
-	}, [supabase, day, month, year]);
+				const { categoryHistory, totalAmount } =
+					mapCategoryTransactionDataAndGetTotalAmount(
+						transactionData,
+						category
+					);
+				setTransactionHistory(categoryHistory);
+				setAmount(totalAmount);
+			};
+			getDayCategoryTransactions();
+		}
+	}, [supabase, day, month, year, category, account, accountData]);
 
 	return (
 		<>
+			<Select
+				value={account}
+				data={accountInfoRef.current}
+				defaultValue={accountInfoRef.current[0].value}
+				onChange={setAccount}
+			/>
 			<div className={mainStyles.dayAmountContainer}>
-				<NativeSelect />
 				<div>
 					<p>Amount</p>
 					<Select
 						value={category}
+						defaultValue='Expense'
 						data={categoriesList}
 						onChange={setCategory}
 					/>
 				</div>
-				<p>275 USD</p>
+				<Text fw={500}>
+					{amount} {currency}
+				</Text>
 			</div>
 			<div className={mainStyles.transactionDetailContainer}>
-				<p>Transactions</p>
+				<Text fw={500}>Transactions</Text>
 				{transactionHistory.map((history) => (
-					<div key={history.id}>
-						<p>
-							{history.category} {history.amount}
-						</p>
+					<div key={history.id} className={mainStyles.historyContainer}>
+						<div>
+							<p>{history.category}</p>
+							<p>
+								{history.amount} {currency}
+							</p>
+						</div>
 					</div>
 				))}
 			</div>
