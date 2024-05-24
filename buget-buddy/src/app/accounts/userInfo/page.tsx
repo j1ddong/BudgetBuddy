@@ -5,6 +5,7 @@ import { Button, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import authStyles from '@/app/accounts/auth.module.css';
 import { navigateToSetFinance } from '@/app/utils/navigate';
+import { userInfoSearchParamsType } from '@/type';
 
 const UserInfo = ({ searchParams }: userInfoSearchParamsType) => {
 	const form = useForm({

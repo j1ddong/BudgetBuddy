@@ -12,8 +12,13 @@ import {
 	mapCategoryTransactionDataAndGetTotalAmount,
 } from '@/app/utils/convertDataStructure';
 import { categoriesList } from '@/app/utils/const';
+import {
+	DayDetailBoxPropsType,
+	selectDataMapType,
+	transactionHistoryType,
+} from '@/type';
 
-const DayAmountBox = ({ year, month, day }: DayAmountBoxPropsType) => {
+const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
 	const supabase = createClient();
 
 	const { accountData } = useAccountData();
@@ -35,13 +40,12 @@ const DayAmountBox = ({ year, month, day }: DayAmountBoxPropsType) => {
 			setCurrency(getCurrency(account, accountData));
 
 			const getDayCategoryTransactions = async () => {
-				const { data: transactionData, error } =
-					await fetchDayCategoryTransactions(
-						supabase,
-						{ date: { year, month, day } },
-						account,
-						category
-					);
+				const { data: transactionData } = await fetchDayCategoryTransactions(
+					supabase,
+					{ date: { year, month, day } },
+					account,
+					category
+				);
 
 				const { categoryHistory, totalAmount } =
 					mapCategoryTransactionDataAndGetTotalAmount(
@@ -68,7 +72,7 @@ const DayAmountBox = ({ year, month, day }: DayAmountBoxPropsType) => {
 					<p>Amount</p>
 					<Select
 						value={category}
-						defaultValue='Expense'
+						defaultValue='expense'
 						data={categoriesList}
 						onChange={setCategory}
 					/>
@@ -94,4 +98,4 @@ const DayAmountBox = ({ year, month, day }: DayAmountBoxPropsType) => {
 	);
 };
 
-export default DayAmountBox;
+export default DayDetailBox;

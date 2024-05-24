@@ -1,7 +1,41 @@
 .appName {
 	text-align: center;
-	margin: 5px 0;
+	padding: 5px 0;
 }
-.btn {
-	margin: 20px 0;
+.footerContianer {
+	display: flex;
+	justify-content: space-around;
+	height: 100%;
+	align-items: center;
+}
+.dayAmountContainer {
+	border: 1px solid var(--gray-color);
+	padding: 10px;
+	margin: 10px 0;
+}
+.dayAmountContainer > div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.dayContainer {
+	margin-bottom: 15px;
+	display: flex;
+}
+.dayContainer > p {
+	margin: 0 10px;
+}
+.transactionDetailContainer {
+	height: calc(100vh - 315px);
+	overflow: scroll;
+	border: 1px solid var(--gray-color);
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.historyContainer {
+	padding: 10px 0;
+}
+.historyContainer > div {
+	display: flex;
+	justify-content: space-between;
 }

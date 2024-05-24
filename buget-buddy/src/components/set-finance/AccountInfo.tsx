@@ -1,4 +1,5 @@
 import accountStyles from '@/app/set-finance/account.module.css';
+import { IdMapType, accountInfoType } from '@/type';
 
 const AccountInfo = ({
 	accountInfoData,

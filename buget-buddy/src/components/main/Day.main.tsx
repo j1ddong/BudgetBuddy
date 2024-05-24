@@ -1,6 +1,6 @@
 'use client';
 
-import DayAmountBox from '@/components/main/DayAmountBox';
+import DayDetailBox from '@/components/main/DayDetailBox';
 import mainStyles from '@/app/page.module.css';
 import { Button } from '@mantine/core';
 import { DateTime } from 'luxon';
@@ -34,7 +34,7 @@ const DayMain = () => {
 				</p>
 				<span onClick={() => manageDayHandler(1)}>&gt;</span>
 			</div>
-			<DayAmountBox year={year} month={month} day={day} />
+			<DayDetailBox year={year} month={month} day={day} />
 			<Button fullWidth component={Link} href={'/new-transaction'}>
 				Add Transactions
 			</Button>

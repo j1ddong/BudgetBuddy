@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/utils/supabase/client';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
+import { selectDataMapType } from '@/type';
 
 type TransferFormPropsType = {
 	accountInfo: selectDataMapType;

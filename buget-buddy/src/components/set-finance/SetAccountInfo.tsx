@@ -11,6 +11,7 @@ import {
 	accountInfoFormSchema,
 } from '@/app/utils/formValidation';
 import AccountInfo from './AccountInfo';
+import { selectDataMapType, accountInfoType, IdMapType } from '@/type';
 
 const SetAccountInfo = () => {
 	const supabase = createClient();
@@ -91,7 +92,8 @@ const SetAccountInfo = () => {
 					display_name: values.accountName,
 					balance: values.balance,
 				})
-				.select();
+				.select()
+				.single();
 		if (accountInfoInsertErr) {
 			alert('Please try again');
 			return;
@@ -101,7 +103,7 @@ const SetAccountInfo = () => {
 				...pre,
 				{
 					account_type_id: accountInfoInsertData.account_type_id,
-					balance: accountInfoInsertData.balance,
+					balance: accountInfoInsertData.balance!,
 					currency_id: accountInfoInsertData.currency_id,
 					display_name: accountInfoInsertData.display_name,
 					id: accountInfoInsertData.id,

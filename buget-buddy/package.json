@@ -6,7 +6,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "tsc --noEmit --strict && next lint"
 	},
 	"dependencies": {
 		"@mantine/core": "^7.9.1",

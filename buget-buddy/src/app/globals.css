@@ -4,6 +4,8 @@
 	--font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
 		'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
 		'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+	--main-color: #228be6;
+	--gray-color: #ced4da;
 }
 
 * {
@@ -12,18 +14,15 @@
 	margin: 0;
 }
 
-html,
-body {
-	max-width: 100vw;
-	overflow-x: hidden;
-}
 a {
 	color: inherit;
 	text-decoration: none;
 }
-@media only screen and (max-width: 450px) {
-	body {
-		max-width: 330px;
-		margin: 30px auto;
-	}
+
+body {
+	padding: 1rem 1.5rem;
+	min-width: 380px;
+}
+
+@media only screen and (min-width: 450px) {
 }

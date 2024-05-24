@@ -1,11 +1,15 @@
-type confirmUrlSearchParamsType = { searchParams: { confirmUrl: string } };
-type userInfoSearchParamsType = {
+import { SupabaseClient } from '@supabase/supabase-js';
+
+export type confirmUrlSearchParamsType = {
+	searchParams: { confirmUrl: string };
+};
+export type userInfoSearchParamsType = {
 	searchParams: { uid: string; error_code: string };
 };
 
-type selectDataMapType = { value: string; label: string }[];
+export type selectDataMapType = { value: string; label: string }[];
 
-type accountInfoType = {
+export type accountInfoType = {
 	account_type_id: string;
 	balance: number;
 	currency_id: string;
@@ -13,24 +17,24 @@ type accountInfoType = {
 	id: string;
 };
 
-type IdMapType = {
+export type IdMapType = {
 	[id: string]: string;
 };
 
-type transactionHistoryType = {
+export type transactionHistoryType = {
 	id: string;
 	account: string;
 	category: string;
 	amount: number;
 }[];
 
-type DayAmountBoxPropsType = {
+export type DayDetailBoxPropsType = {
 	year: number;
 	month: number;
 	day: number;
 };
 
-type AccountDataType =
+export type AccountDataType =
 	| {
 			account_type_id: string;
 			balance: number;
@@ -46,7 +50,7 @@ type AccountDataType =
 	  }[]
 	| null;
 
-type transactionDataType =
+export type transactionDataType =
 	| {
 			tableName: any;
 			id: any;
@@ -62,3 +66,12 @@ type transactionDataType =
 			}[];
 	  }[]
 	| null;
+
+export type fetchDayCategoryTransactionsType = (
+	supabase: SupabaseClient,
+	{
+		date: { year, month, day },
+	}: { date: { year: number; month: number; day: number } },
+	account_id: string | null,
+	category: string | null
+) => any;

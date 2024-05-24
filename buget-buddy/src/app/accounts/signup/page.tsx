@@ -23,16 +23,13 @@ const Signup = () => {
 					process.env.NEXT_PUBLIC_SITE_URL + '/accounts/userInfo',
 			},
 		});
-		// confirm했는지 안했는지에 따라..
-		console.log(data);
-		console.log('error', error);
+
 		// error handling
 		if (error) {
 		}
 		if (data.user) {
 			alert('Please check the email to active an account');
 			form.reset();
-			// resend email 하는 거 필요..
 		}
 	});
 
