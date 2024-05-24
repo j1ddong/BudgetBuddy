@@ -1,5 +1,6 @@
 'use client';
 
+import { AccountDataType } from '@/type';
 import {
 	Dispatch,
 	ReactNode,
