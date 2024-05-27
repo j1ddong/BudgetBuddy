@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { createClient } from '@/app/utils/supabase/server';
 import { UserDataContextProvider } from '@/contexts/userContext/userContext.provider';
 import { AccountDataContextProvider } from '@/contexts/accountContext/accountContext.provider';
+import { createClient } from './utils/supabase/server';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,10 +24,23 @@ export default async function RootLayout({
 		data: { user },
 	} = await supabase.auth.getUser();
 
+	if (!user) {
+		return (
+			<html>
+				<head>
+					<ColorSchemeScript />
+				</head>
+				<body className={inter.className}>
+					<MantineProvider>{children}</MantineProvider>
+				</body>
+			</html>
+		);
+	}
+
 	const { data: accountData, error: accountDataErr } = await supabase
 		.from('accounts')
 		.select('*, currencies!inner(display_name)')
-		.eq('user_id', user!.id);
+		.eq('user_id', user.id);
 
 	return (
 		<html lang='en'>
