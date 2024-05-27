@@ -4,8 +4,8 @@ import { createClient } from '@/app/utils/supabase/client';
 import { Button, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import authStyles from '@/app/accounts/auth.module.css';
-import { navigateToSetFinance } from '@/app/utils/navigate';
 import { userInfoSearchParamsType } from '@/type';
+import { useRouter } from 'next/navigation';
 
 const UserInfo = ({ searchParams }: userInfoSearchParamsType) => {
 	const form = useForm({
@@ -13,6 +13,7 @@ const UserInfo = ({ searchParams }: userInfoSearchParamsType) => {
 		validate: zodResolver(userInfoFormSchema),
 	});
 	const supabase = createClient();
+	const router = useRouter();
 
 	const submitUserInfo = form.onSubmit(async (values) => {
 		const { error } = await supabase.from('users').insert({
@@ -23,7 +24,7 @@ const UserInfo = ({ searchParams }: userInfoSearchParamsType) => {
 		if (error) {
 			return;
 		}
-		navigateToSetFinance();
+		router.push('/set-finance');
 	});
 	return (
 		<form onSubmit={submitUserInfo}>

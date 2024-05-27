@@ -5,7 +5,7 @@ import authStyles from '@/app/accounts/auth.module.css';
 import { useForm, zodResolver } from '@mantine/form';
 import { authFormSchema } from '@/app/utils/formValidation';
 import { createClient } from '@/app/utils/supabase/client';
-import { navigateToMain } from '@/app/utils/navigate';
+import { useRouter } from 'next/navigation';
 
 const Signin = () => {
 	const form = useForm({
@@ -14,6 +14,8 @@ const Signin = () => {
 	});
 
 	const supabase = createClient();
+
+	const router = useRouter();
 
 	const submitSignIn = form.onSubmit(async (values) => {
 		const { data, error } = await supabase.auth.signInWithPassword({
@@ -25,7 +27,7 @@ const Signin = () => {
 			return;
 		}
 		if (data.user) {
-			navigateToMain();
+			router.push('/');
 		}
 		alert('Please try again');
 	});

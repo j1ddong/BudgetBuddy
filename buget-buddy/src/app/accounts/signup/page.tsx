@@ -19,8 +19,10 @@ const Signup = () => {
 			email: values.email,
 			password: values.password,
 			options: {
-				emailRedirectTo:
-					process.env.NEXT_PUBLIC_SITE_URL + '/accounts/userInfo',
+				data: {
+					origin: location.origin,
+				},
+				emailRedirectTo: location.origin + '/accounts/userInfo',
 			},
 		});
 
