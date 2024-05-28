@@ -3,7 +3,7 @@
 import { Select, Text } from '@mantine/core';
 import mainStyles from '@/app/page.module.css';
 import { createClient } from '@/app/utils/supabase/client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchDayCategoryTransactions } from '@/app/utils/db';
 import { useAccountData } from '@/contexts/accountContext/accountContext.provider';
 import {
@@ -12,22 +12,14 @@ import {
 	mapCategoryTransactionDataAndGetTotalAmount,
 } from '@/app/utils/convertDataStructure';
 import { categoriesList } from '@/app/utils/const';
-import {
-	DayDetailBoxPropsType,
-	selectDataMapType,
-	transactionHistoryType,
-} from '@/type';
+import { DayDetailBoxPropsType, transactionHistoryType } from '@/type';
 
 const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
 	const supabase = createClient();
+	const accountData = useAccountData();
+	const accountInfo = mapAccountData(accountData);
 
-	const { accountData } = useAccountData();
-	const accountInfoRef = useRef<selectDataMapType | null>(null);
-	accountInfoRef.current = mapAccountData(accountData);
-
-	const [account, setAccount] = useState<string | null>(
-		accountInfoRef.current[0].value
-	);
+	const [account, setAccount] = useState<string | null>(accountInfo[0].value);
 	const [category, setCategory] = useState<string | null>('expense');
 	const [amount, setAmount] = useState<number>(0);
 	const [currency, setCurrency] = useState<string | undefined>('');
@@ -36,35 +28,30 @@ const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
 		useState<transactionHistoryType>([]);
 
 	useEffect(() => {
-		if (accountInfoRef.current) {
-			setCurrency(getCurrency(account, accountData));
+		setCurrency(getCurrency(account, accountData));
 
-			const getDayCategoryTransactions = async () => {
-				const { data: transactionData } = await fetchDayCategoryTransactions(
-					supabase,
-					{ date: { year, month, day } },
-					account,
-					category
-				);
+		const getDayCategoryTransactions = async () => {
+			const { data: transactionData } = await fetchDayCategoryTransactions(
+				supabase,
+				{ date: { year, month, day } },
+				account,
+				category
+			);
 
-				const { categoryHistory, totalAmount } =
-					mapCategoryTransactionDataAndGetTotalAmount(
-						transactionData,
-						category
-					);
-				setTransactionHistory(categoryHistory);
-				setAmount(totalAmount);
-			};
-			getDayCategoryTransactions();
-		}
+			const { categoryHistory, totalAmount } =
+				mapCategoryTransactionDataAndGetTotalAmount(transactionData, category);
+			setTransactionHistory(categoryHistory);
+			setAmount(totalAmount);
+		};
+		getDayCategoryTransactions();
 	}, [supabase, day, month, year, category, account, accountData]);
 
 	return (
 		<>
 			<Select
 				value={account}
-				data={accountInfoRef.current}
-				defaultValue={accountInfoRef.current[0].value}
+				data={accountInfo}
+				defaultValue={accountInfo[0].value}
 				onChange={setAccount}
 			/>
 			<div className={mainStyles.dayAmountContainer}>
