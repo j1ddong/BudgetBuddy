@@ -47,10 +47,7 @@ const AccountDataContextProviderComponent = ({
 	const [data, setData] = useState<AccountDataType>(initialData.accountData);
 
 	const refresh = async () => {
-		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_SITE_URL}/api/getAccountInfo`,
-			{ method: 'POST' }
-		);
+		const res = await fetch(`/api/getAccountInfo`, { method: 'POST' });
 		const accountData = await res.json();
 		setData(accountData);
 	};

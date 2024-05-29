@@ -12,25 +12,16 @@ const NewTransactionDetail = ({
 }: {
 	searchParams: { type: string };
 }) => {
-	const { accountData } = useAccountData();
-	const accountInfoRef = useRef<selectDataMapType | null>(null);
-	accountInfoRef.current = mapAccountData(accountData);
+	const accountData = useAccountData();
+	const accountInfo = mapAccountData(accountData);
 
 	if (searchParams.type === 'Transfer') {
-		return (
-			<TransferForm
-				accountInfo={accountInfoRef.current}
-				type={searchParams.type}
-			/>
-		);
+		return <TransferForm accountInfo={accountInfo} type={searchParams.type} />;
 	} else if (searchParams.type === 'Exchange') {
 		return <>Exchange</>;
 	}
 	return (
-		<DepositExpenseForm
-			accountInfo={accountInfoRef.current}
-			type={searchParams.type}
-		/>
+		<DepositExpenseForm accountInfo={accountInfo} type={searchParams.type} />
 	);
 };
 
