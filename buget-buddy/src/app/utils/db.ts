@@ -1,5 +1,6 @@
 import { fetchDayCategoryTransactionsType } from '@/type';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { DateTime } from 'luxon';
 
 export const getCategoryId = async (supabase: SupabaseClient, type: string) => {
 	const { data, error } = await supabase
@@ -243,3 +244,34 @@ export const fetchDayCategoryTransactions: fetchDayCategoryTransactionsType =
 			.eq('account_id', account_id);
 		return { data };
 	};
+
+export const fetchMonthlyTransactions = async (
+	supabase: SupabaseClient,
+	dateInfo: DateTime
+) => {
+	const endDate = dateInfo.minus({ month: 6 });
+	const endYear = endDate.year;
+	const endMonth = endDate.month;
+
+	const { data: montlyExpenseTransactionData } = await supabase
+		.from('transactions')
+		.select(
+			`date, id, 
+			categories(display_name, transaction_type), 
+			amount: expense_transactions!inner(amount)`
+		)
+		.gte('date', `${endYear}-${endMonth}-01`)
+		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
+
+	const { data: montlyDepositTransactionData } = await supabase
+		.from('transactions')
+		.select(
+			`date, id, 
+		categories(display_name, transaction_type), 
+		amount: deposit_transactions!inner(amount)`
+		)
+		.gte('date', `${endYear}-${endMonth}-01`)
+		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
+
+	return { montlyExpenseTransactionData, montlyDepositTransactionData };
+};
