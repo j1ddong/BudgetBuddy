@@ -253,7 +253,7 @@ export const fetchMonthlyTransactions = async (
 	const endYear = endDate.year;
 	const endMonth = endDate.month;
 
-	const { data: montlyExpenseTransactionData } = await supabase
+	const { data: monthlyExpenseTransactionData } = await supabase
 		.from('transactions')
 		.select(
 			`date, id, 
@@ -263,7 +263,7 @@ export const fetchMonthlyTransactions = async (
 		.gte('date', `${endYear}-${endMonth}-01`)
 		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
 
-	const { data: montlyDepositTransactionData } = await supabase
+	const { data: monthlyDepositTransactionData } = await supabase
 		.from('transactions')
 		.select(
 			`date, id, 
@@ -273,5 +273,5 @@ export const fetchMonthlyTransactions = async (
 		.gte('date', `${endYear}-${endMonth}-01`)
 		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
 
-	return { montlyExpenseTransactionData, montlyDepositTransactionData };
+	return { monthlyExpenseTransactionData, monthlyDepositTransactionData };
 };

@@ -97,8 +97,18 @@ export type monthlyCategorySumType = {
 	[month: number]: { [category: string]: number };
 };
 
-export type monthlyAllChartDataType =  {
+export type monthlyAllChartDataType = {
 	month: string;
 	expense: any;
 	deposit: any;
-}[]
+}[];
+
+export type monthCategorySum = {
+	[type: string]: number;
+};
+
+export type categoryPieType = {
+	name: string;
+	value: number;
+	color: string;
+}[];

@@ -10,3 +10,11 @@
 	color: var(--main-color);
 	font-weight: 500;
 }
+.pieChartContainer > div {
+	margin: 60px auto 20px;
+	width: max-content;
+}
+.pieChartContainer > p {
+	text-align: center;
+	margin-top: 10px;
+}

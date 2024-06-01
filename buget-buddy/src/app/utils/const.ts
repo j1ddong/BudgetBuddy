@@ -25,3 +25,19 @@ export const months = [
 	'Nov',
 	'Dec',
 ];
+
+export const COLORS = [
+	'indigo.6',
+	'yellow.6',
+	'teal.6',
+	'pink.6',
+	'gray.6',
+	'violet.6',
+	'blue.6',
+	'grape.6',
+	'cyan.6',
+	'orange.6',
+	'red.6',
+	'lime.6',
+	'brown.6',
+];
