@@ -1,8 +1,15 @@
 import {
 	AccountDataType,
+	categoryChartType,
+	monthlyAllChartDataType,
+	monthlyCategorySumType,
 	selectDataMapType,
 	transactionHistoryType,
+	monthCategorySum,
+	categoryPieType,
 } from '@/type';
+import { DateTime } from 'luxon';
+import { COLORS, months } from './const';
 
 export const mapAccountData = (accountData: AccountDataType) => {
 	const accountDataMap: selectDataMapType = [];
@@ -57,4 +64,140 @@ export const getCurrency = (
 ) => {
 	const accont = accountData?.find((account) => account.id === account_id);
 	return accont?.currencies.display_name;
+};
+
+const getMonthlyCategoryChartData = (
+	monthlyTransactionData: any[] | null,
+	dateInfo: DateTime,
+	category: string
+) => {
+	const monthlyCategorySum: monthlyCategorySumType = {};
+
+	monthlyTransactionData?.forEach((data) => {
+		const monthIdx: number = Number(data.date.slice(5, 7));
+		const transactionType = data.categories.transaction_type;
+
+		if (monthlyCategorySum[monthIdx]) {
+			monthlyCategorySum[monthIdx][transactionType] += data.amount[0].amount;
+		} else {
+			monthlyCategorySum[monthIdx] = {
+				[transactionType]: data.amount[0].amount,
+			};
+		}
+	});
+
+	const monthlyCategoryChartData: categoryChartType = [];
+
+	for (let num = 5; num > -1; num--) {
+		const monthIdx: number = dateInfo.minus({ month: num }).month;
+		const month: string = months[monthIdx - 1];
+		if (monthlyCategorySum[monthIdx]) {
+			monthlyCategoryChartData.push({ month, ...monthlyCategorySum[monthIdx] });
+		} else {
+			monthlyCategoryChartData.push({ month, [category]: 0 });
+		}
+	}
+
+	return monthlyCategoryChartData;
+};
+
+export const convertBarChartData = ({
+	monthlyExpenseTransactionData,
+	monthlyDepositTransactionData,
+	dateInfo,
+}: any) => {
+	const monthlyExpenseChartData: categoryChartType =
+		getMonthlyCategoryChartData(
+			monthlyExpenseTransactionData,
+			dateInfo,
+			'expense'
+		);
+	const monthlyDepositChartData: categoryChartType =
+		getMonthlyCategoryChartData(
+			monthlyDepositTransactionData,
+			dateInfo,
+			'deposit'
+		);
+	const monthlyAllChartData: monthlyAllChartDataType = [];
+	for (let idx = 0; idx < 6; idx++) {
+		const month = monthlyExpenseChartData[idx].month;
+		const expense = monthlyExpenseChartData[idx].expense;
+		const deposit = monthlyDepositChartData[idx].deposit;
+		monthlyAllChartData.push({ month, expense, deposit });
+	}
+
+	return {
+		monthlyExpenseChartData,
+		monthlyDepositChartData,
+		monthlyAllChartData,
+	};
+};
+
+const getMonthCategoryPieData = (
+	monthlyTransactionData: any[] | null,
+	dateInfo: DateTime,
+	colorIdx: number
+) => {
+	const monthCategorySum: monthCategorySum = {};
+	const categoryList: string[] = [];
+
+	monthlyTransactionData?.forEach((data) => {
+		const categoryType: string = data.categories.display_name;
+		const currentMonth: number = dateInfo.month;
+		const dataMonth: number = Number(data.date.slice(5, 7));
+
+		if (currentMonth > dataMonth) {
+			return;
+		}
+		if (monthCategorySum[categoryType]) {
+			monthCategorySum[categoryType] += data.amount[0].amount;
+		} else {
+			monthCategorySum[categoryType] = data.amount[0].amount;
+			categoryList.push(categoryType);
+		}
+	});
+
+	const monthCategoryPieData: categoryPieType = [];
+
+	categoryList.forEach((category, idx) => {
+		const color = COLORS[idx + colorIdx];
+		monthCategoryPieData.push({
+			name: category,
+			value: monthCategorySum[category],
+			color,
+		});
+	});
+
+	const returnColorIdx = 1 + 2;
+
+	return { monthCategoryPieData, returnColorIdx };
+};
+
+export const convertPieChartData = ({
+	monthlyExpenseTransactionData,
+	monthlyDepositTransactionData,
+	dateInfo,
+}: any) => {
+	const colorIdx = 0;
+
+	const {
+		monthCategoryPieData: monthExpensePieData,
+		returnColorIdx: expenseColorIdx,
+	}: { monthCategoryPieData: categoryPieType; returnColorIdx: number } =
+		getMonthCategoryPieData(monthlyExpenseTransactionData, dateInfo, colorIdx);
+
+	const {
+		monthCategoryPieData: monthDepositPieData,
+		returnColorIdx,
+	}: { monthCategoryPieData: categoryPieType; returnColorIdx: number } =
+		getMonthCategoryPieData(
+			monthlyDepositTransactionData,
+			dateInfo,
+			expenseColorIdx
+		);
+
+	const monthAllPieData: categoryPieType =
+		monthExpensePieData.concat(monthDepositPieData);
+
+	return { monthExpensePieData, monthDepositPieData, monthAllPieData };
 };

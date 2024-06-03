@@ -75,3 +75,40 @@ export type fetchDayCategoryTransactionsType = (
 	account_id: string | null,
 	category: string | null
 ) => any;
+
+export type monthlyTransactionDatatype = {
+	date: any;
+	id: any;
+	categories: {
+		display_name: any;
+		transaction_type: any;
+	}[];
+	amount: {
+		amount: number;
+	}[];
+}[];
+
+export type categoryChartType = {
+	month: string;
+	[category: string]: any;
+}[];
+
+export type monthlyCategorySumType = {
+	[month: number]: { [category: string]: number };
+};
+
+export type monthlyAllChartDataType = {
+	month: string;
+	expense: any;
+	deposit: any;
+}[];
+
+export type monthCategorySum = {
+	[type: string]: number;
+};
+
+export type categoryPieType = {
+	name: string;
+	value: number;
+	color: string;
+}[];
