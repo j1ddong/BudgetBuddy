@@ -9,3 +9,7 @@
 	max-width: 240px;
 	margin: 0 auto;
 }
+.appName {
+	text-align: center;
+	padding: 5px 0;
+}

@@ -2,7 +2,6 @@
 
 import { Select, Text } from '@mantine/core';
 import mainStyles from '@/app/page.module.css';
-import { createClient } from '@/app/utils/supabase/client';
 import { useEffect, useState } from 'react';
 import { fetchDayCategoryTransactions } from '@/app/utils/db';
 import { useAccountData } from '@/contexts/accountContext/accountContext.provider';
@@ -13,9 +12,9 @@ import {
 } from '@/app/utils/convertDataStructure';
 import { categoriesList } from '@/app/utils/const';
 import { DayDetailBoxPropsType, transactionHistoryType } from '@/type';
+import { supabase } from '@/app/utils/supabase/authAdmin';
 
 const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
-	const supabase = createClient();
 	const accountData = useAccountData();
 	const accountInfo = mapAccountData(accountData);
 
@@ -29,7 +28,6 @@ const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
 
 	useEffect(() => {
 		setCurrency(getCurrency(account, accountData));
-
 		const getDayCategoryTransactions = async () => {
 			const { data: transactionData } = await fetchDayCategoryTransactions(
 				supabase,
@@ -40,11 +38,12 @@ const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
 
 			const { categoryHistory, totalAmount } =
 				mapCategoryTransactionDataAndGetTotalAmount(transactionData, category);
+
 			setTransactionHistory(categoryHistory);
 			setAmount(totalAmount);
 		};
 		getDayCategoryTransactions();
-	}, [supabase, day, month, year, category, account, accountData]);
+	}, [day, month, year, category, account, accountData]);
 
 	return (
 		<>
