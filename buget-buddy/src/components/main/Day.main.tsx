@@ -6,8 +6,14 @@ import { Button } from '@mantine/core';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { useState } from 'react';
+import { transactionHistoryType } from '@/type';
 
-const DayMain = () => {
+type DayMainPropsType = {
+	categoryHistory: transactionHistoryType;
+	totalAmount: number;
+};
+
+const DayMain = ({ categoryHistory, totalAmount }: DayMainPropsType) => {
 	const [year, setYear] = useState<number>(DateTime.now().year);
 	const [month, setMonth] = useState<number>(DateTime.now().month);
 	const [displayMonth, setDisplayMonth] = useState<string>(
@@ -34,7 +40,13 @@ const DayMain = () => {
 				</p>
 				<span onClick={() => manageDayHandler(1)}>&gt;</span>
 			</div>
-			<DayDetailBox year={year} month={month} day={day} />
+			<DayDetailBox
+				year={year}
+				month={month}
+				day={day}
+				categoryHistory={categoryHistory}
+				totalAmount={totalAmount}
+			/>
 			<Button fullWidth component={Link} href={'/new-transaction'}>
 				Add Transactions
 			</Button>

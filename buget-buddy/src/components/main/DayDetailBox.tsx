@@ -14,17 +14,25 @@ import { categoriesList } from '@/app/utils/const';
 import { DayDetailBoxPropsType, transactionHistoryType } from '@/type';
 import { supabase } from '@/app/utils/supabase/authAdmin';
 
-const DayDetailBox = ({ year, month, day }: DayDetailBoxPropsType) => {
+const DayDetailBox = ({
+	year,
+	month,
+	day,
+	categoryHistory,
+	totalAmount,
+}: DayDetailBoxPropsType) => {
 	const accountData = useAccountData();
 	const accountInfo = mapAccountData(accountData);
 
 	const [account, setAccount] = useState<string | null>(accountInfo[0].value);
 	const [category, setCategory] = useState<string | null>('expense');
-	const [amount, setAmount] = useState<number>(0);
-	const [currency, setCurrency] = useState<string | undefined>('');
+	const [currency, setCurrency] = useState<string | undefined>(
+		getCurrency(account, accountData)
+	);
 
 	const [transactionHistory, setTransactionHistory] =
-		useState<transactionHistoryType>([]);
+		useState<transactionHistoryType>(categoryHistory);
+	const [amount, setAmount] = useState<number>(totalAmount);
 
 	useEffect(() => {
 		setCurrency(getCurrency(account, accountData));
