@@ -32,6 +32,8 @@ export type DayDetailBoxPropsType = {
 	year: number;
 	month: number;
 	day: number;
+	categoryHistory: transactionHistoryType;
+	totalAmount: number;
 };
 
 export type AccountDataType =
