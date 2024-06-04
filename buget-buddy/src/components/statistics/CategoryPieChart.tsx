@@ -2,13 +2,6 @@ import { categoryPieType } from '@/type';
 import { PieChart } from '@mantine/charts';
 import statisticsStyles from '@/app/statistics/statistics.module.css';
 
-const data = [
-	{ name: 'USA', value: 400, color: 'indigo.6' },
-	{ name: 'India', value: 300, color: 'yellow.6' },
-	{ name: 'Japan', value: 300, color: 'teal.6' },
-	{ name: 'Other', value: 200, color: 'gray.6' },
-];
-
 type CategoryPieChartPropsType = {
 	seletedCategory: string;
 	monthExpensePieData: categoryPieType;
@@ -37,7 +30,7 @@ const CategoryPieChart = ({
 			<div>
 				<PieChart data={setPieData(seletedCategory)} withTooltip />
 			</div>
-			<p>&lt;Month {seletedCategory} Category Statistics&gt;</p>
+			<p>&lt; {seletedCategory} Category Statistics&gt; </p>
 		</div>
 	);
 };

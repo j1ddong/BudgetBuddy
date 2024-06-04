@@ -69,6 +69,7 @@ const Statistics = () => {
 					monthlyDepositTransactionData,
 					dateInfo,
 				});
+			console.log(monthExpensePieData);
 			setExpensePieData(monthExpensePieData);
 			setDepositPieData(monthDepositPieData);
 			setMonthAllPieData(monthAllPieData);

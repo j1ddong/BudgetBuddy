@@ -5,9 +5,9 @@ import { Button, NumberInput, Select, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/app/utils/supabase/client';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 import { selectDataMapType } from '@/type';
+import { supabase } from '@/app/utils/supabase/authAdmin';
 
 type TransferFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -15,7 +15,6 @@ type TransferFormPropsType = {
 };
 
 const TransferForm = ({ accountInfo, type }: TransferFormPropsType) => {
-	const supabase = createClient();
 	const router = useRouter();
 
 	const transferForm = useForm<transferForm>({
@@ -30,7 +29,7 @@ const TransferForm = ({ accountInfo, type }: TransferFormPropsType) => {
 	});
 
 	const transferFormSubmit = transferForm.onSubmit(async (values) => {
-		transferFormDBInsert(supabase, values, type);
+		await transferFormDBInsert(supabase, values, type);
 		router.push('/');
 	});
 

@@ -1,8 +1,14 @@
 'use server';
 
-import Main from '@/components/main/Main';
+import Footer from '@/components/main/Footer';
+import DayMain from '@/components/main/Day.main';
 
 const Home = async () => {
-	return <Main />;
+	return (
+		<>
+			<DayMain />
+			<Footer />
+		</>
+	);
 };
 export default Home;

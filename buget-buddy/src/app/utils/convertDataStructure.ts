@@ -45,6 +45,25 @@ export const mapCategoryTransactionDataAndGetTotalAmount = (
 		return { categoryHistory, totalAmount };
 	}
 
+	if (category === 'exchange') {
+		transactionData?.forEach((transaction) => {
+			const exchangeAmount =
+				transaction.from === undefined
+					? transaction.to[0].amount_to
+					: -transaction.from[0].amount_from;
+
+			totalAmount += exchangeAmount;
+			categoryHistory.push({
+				id: transaction.id,
+				account: transaction.accounts.display_name,
+				category: transaction.categories.display_name,
+				amount: exchangeAmount,
+			});
+		});
+		return { categoryHistory, totalAmount };
+	}
+
+	// deposit, expense
 	transactionData?.forEach((transaction) => {
 		totalAmount += transaction.detail[0].amount;
 		categoryHistory.push({

@@ -7,7 +7,7 @@ import {
 } from '@/app/utils/formValidation';
 import { depositExpenseFormDBInsert } from '@/app/utils/db';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/app/utils/supabase/client';
+import { supabase } from '@/app/utils/supabase/authAdmin';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 import { selectDataMapType } from '@/type';
 
@@ -20,7 +20,6 @@ const DepositExpenseForm = ({
 	accountInfo,
 	type,
 }: DepositExpenseFormPropsType) => {
-	const supabase = createClient();
 	const router = useRouter();
 
 	const depositExpenseForm = useForm<depositExpenseForm>({
@@ -35,7 +34,7 @@ const DepositExpenseForm = ({
 
 	const depositExpenseFormSubmit = depositExpenseForm.onSubmit(
 		async (values) => {
-			depositExpenseFormDBInsert(supabase, values, type);
+			await depositExpenseFormDBInsert(supabase, values, type);
 			router.push('/');
 		}
 	);

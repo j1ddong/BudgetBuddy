@@ -15,7 +15,6 @@ export const insertNewTransactionData = async (
 	supabase: SupabaseClient,
 	date: string,
 	account_id: string,
-	user_id: string,
 	category_id: string
 ) => {
 	const { data, error } = await supabase
@@ -23,7 +22,6 @@ export const insertNewTransactionData = async (
 		.insert({
 			date,
 			account_id,
-			user_id,
 			category_id,
 		})
 		.select()
@@ -86,9 +84,6 @@ export const depositExpenseFormDBInsert = async (
 	},
 	type: string
 ) => {
-	const user_id = await supabase.auth
-		.getUser()
-		.then(({ data }) => data.user!.id);
 	const { data: categoryData, error: categoryDataErr } = await getCategoryId(
 		supabase,
 		type
@@ -104,7 +99,6 @@ export const depositExpenseFormDBInsert = async (
 			supabase,
 			values.date,
 			values.account,
-			user_id,
 			categoryData.id
 		);
 
@@ -149,10 +143,6 @@ export const transferFormDBInsert = async (
 	},
 	type: string
 ) => {
-	const user_id = await supabase.auth
-		.getUser()
-		.then(({ data }) => data.user!.id);
-
 	const { data: categoryData, error: categoryDataErr } = await getCategoryId(
 		supabase,
 		type
@@ -168,7 +158,6 @@ export const transferFormDBInsert = async (
 			supabase,
 			values.date,
 			values.account_from,
-			user_id,
 			categoryData.id
 		);
 
@@ -177,7 +166,6 @@ export const transferFormDBInsert = async (
 			supabase,
 			values.date,
 			values.account_to,
-			user_id,
 			categoryData.id
 		);
 
@@ -230,8 +218,35 @@ export const fetchDayCategoryTransactions: fetchDayCategoryTransactionsType =
 			if (transferFromDataErr || transferToDataErr) return;
 			return { data: [...transferFromData, ...transferToData] };
 		}
+		// exchange
+		if (category === 'exchange') {
+			const { data: exchangeFromData, error: exchangeFromDataErr } =
+				await supabase
+					.from('transactions')
+					.select(
+						`id,
+						from: exchange_transactions!exchange_transactions_transaction_id_from_fkey!inner(amount_from),
+						categories(display_name, transaction_type),
+						accounts(display_name)`
+					)
+					.eq('date', `${year}-${month}-${day}`)
+					.eq('account_id', account_id);
+			const { data: exchangeToData, error: exchangeToDataErr } = await supabase
+				.from('transactions')
+				.select(
+					`id,
+					to: exchange_transactions!exchange_transactions_transaction_id_to_fkey!inner(amount_to),
+					categories(display_name, transaction_type),
+					accounts(display_name)`
+				)
+				.eq('date', `${year}-${month}-${day}`)
+				.eq('account_id', account_id);
 
-		// depoist, Expense
+			if (exchangeFromDataErr || exchangeToDataErr) return;
+			return { data: [...exchangeFromData, ...exchangeToData] };
+		}
+
+		// deposit, Expense
 		const { data, error } = await supabase
 			.from('transactions')
 			.select(
@@ -274,4 +289,82 @@ export const fetchMonthlyTransactions = async (
 		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
 
 	return { monthlyExpenseTransactionData, monthlyDepositTransactionData };
+};
+
+export const insertNewExchangeData = async (
+	supabase: SupabaseClient,
+	account_from: string,
+	account_to: string,
+	transaction_id_from: string,
+	transaction_id_to: string,
+	amount_from: number,
+	amount_to: number
+) => {
+	const { error } = await supabase.from('exchange_transactions').insert({
+		account_from,
+		account_to,
+		transaction_id_from,
+		transaction_id_to,
+		amount_from,
+		amount_to,
+	});
+	return { error };
+};
+
+export const exchangeFormDBInsert = async (
+	supabase: SupabaseClient,
+	values: {
+		date: string;
+		account_to: string;
+		account_from: string;
+		amount_from: number;
+		amount_to: number;
+	},
+	type: string
+) => {
+	const { data: categoryData, error: categoryDataErr } = await getCategoryId(
+		supabase,
+		type
+	);
+
+	if (categoryDataErr) {
+		alert('Please try it again');
+		return;
+	}
+
+	const { data: newTransactionFromData, error: newTransactionFromInsertErr } =
+		await insertNewTransactionData(
+			supabase,
+			values.date,
+			values.account_from,
+			categoryData.id
+		);
+
+	const { data: newTransactionToData, error: newTransactionToInsertErr } =
+		await insertNewTransactionData(
+			supabase,
+			values.date,
+			values.account_to,
+			categoryData.id
+		);
+
+	if (newTransactionFromInsertErr || newTransactionToInsertErr) {
+		alert('Please try it again');
+		return;
+	}
+	const { error: newExchangeInsertError } = await insertNewExchangeData(
+		supabase,
+		values.account_from,
+		values.account_to,
+		newTransactionFromData.id,
+		newTransactionToData.id,
+		values.amount_from,
+		values.amount_to
+	);
+	if (newExchangeInsertError) {
+		alert('Please try it again');
+		return;
+	}
+
+	alert('New transaction has been saved');
 };

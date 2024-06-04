@@ -57,3 +57,13 @@ export const transferFormSchema = z.object({
 	account_to: z.string(),
 });
 export type transferForm = z.infer<typeof transferFormSchema>;
+
+export const exchangeFormSchema = z.object({
+	date: z.string().date(),
+	account_from: z.string(),
+	account_to: z.string(),
+	amount_from: z.number(),
+	amount_to: z.number(),
+});
+
+export type exchangeForm = z.infer<typeof exchangeFormSchema>;

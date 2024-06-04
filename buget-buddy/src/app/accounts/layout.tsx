@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import styles from '@/app/page.module.css';
+import accountStyles from '@/app/accounts/auth.module.css';
 
 export const metadata: Metadata = {
 	title: 'BudgetBuddy',
@@ -13,7 +13,7 @@ export default function AuthLayout({
 }>) {
 	return (
 		<div>
-			<h2 className={styles.appName}>BudgetBuddy</h2>
+			<h2 className={accountStyles.appName}>BudgetBuddy</h2>
 			{children}
 		</div>
 	);
