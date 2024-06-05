@@ -5,6 +5,7 @@ type MonthBarChartPropsType = {
 	seletedCategory: string;
 	expenseChartData: categoryChartType;
 	depositChartData: categoryChartType;
+	exchangeChartData: categoryChartType;
 	monthlyAllChartData: monthlyAllChartDataType;
 };
 
@@ -12,6 +13,7 @@ const MonthBarChart = ({
 	seletedCategory,
 	expenseChartData,
 	depositChartData,
+	exchangeChartData,
 	monthlyAllChartData,
 }: MonthBarChartPropsType) => {
 	const setChartData = (seletedCategory: string) => {
@@ -21,6 +23,8 @@ const MonthBarChart = ({
 			return expenseChartData;
 		} else if (seletedCategory === 'Deposit') {
 			return depositChartData;
+		} else if (seletedCategory === 'Exchange') {
+			return exchangeChartData;
 		}
 		return [];
 	};
@@ -33,6 +37,7 @@ const MonthBarChart = ({
 			series={[
 				{ name: 'deposit', color: 'violet.6' },
 				{ name: 'expense', color: 'blue.6' },
+				{ name: 'exchange', color: 'green.6' },
 			]}
 			tickLine='y'
 		/>

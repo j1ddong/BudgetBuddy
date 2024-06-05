@@ -6,6 +6,7 @@ type CategoryPieChartPropsType = {
 	seletedCategory: string;
 	monthExpensePieData: categoryPieType;
 	monthDepositPieData: categoryPieType;
+	monthExchangePieData: categoryPieType;
 	monthAllPieData: categoryPieType;
 };
 
@@ -13,6 +14,7 @@ const CategoryPieChart = ({
 	seletedCategory,
 	monthExpensePieData,
 	monthDepositPieData,
+	monthExchangePieData,
 	monthAllPieData,
 }: CategoryPieChartPropsType) => {
 	const setPieData = (seletedCategory: string) => {
@@ -22,6 +24,8 @@ const CategoryPieChart = ({
 			return monthExpensePieData;
 		} else if (seletedCategory === 'Deposit') {
 			return monthDepositPieData;
+		} else if (seletedCategory === 'Exchange') {
+			return monthExchangePieData;
 		}
 		return [];
 	};
@@ -30,7 +34,9 @@ const CategoryPieChart = ({
 			<div>
 				<PieChart data={setPieData(seletedCategory)} withTooltip />
 			</div>
-			<p>&lt; {seletedCategory} Category Statistics&gt; </p>
+			{setPieData(seletedCategory).length && (
+				<p>&lt; {seletedCategory} Category Statistics&gt; </p>
+			)}
 		</div>
 	);
 };
