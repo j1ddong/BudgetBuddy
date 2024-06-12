@@ -6,7 +6,8 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "tsc --noEmit --strict && next lint"
+		"lint": "tsc --noEmit --strict && next lint",
+		"update-supabase": "npx supabase gen types typescript --project-id pzyabjopdljczklfrygy --schema public > src/database.types.ts"
 	},
 	"dependencies": {
 		"@mantine/charts": "^7.10.0",

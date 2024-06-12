@@ -7,9 +7,9 @@ import {
 } from '@/app/utils/formValidation';
 import { depositExpenseFormDBInsert } from '@/app/utils/db';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/app/utils/supabase/authAdmin';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 import { selectDataMapType } from '@/type';
+import { createClient } from '@/app/utils/supabase/client';
 
 type DepositExpenseFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -21,6 +21,7 @@ const DepositExpenseForm = ({
 	type,
 }: DepositExpenseFormPropsType) => {
 	const router = useRouter();
+	const supabase = createClient();
 
 	const depositExpenseForm = useForm<depositExpenseForm>({
 		mode: 'uncontrolled',

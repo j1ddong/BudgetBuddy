@@ -287,7 +287,7 @@ export const fetchMonthlyTransactions = async (
 		)
 		.gte('date', `${endYear}-${endMonth}-01`)
 		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
-	// cad > 다른 통화로 환전된 것만 가져오기
+
 	const { data: monthlyExchangeTransactionData } = await supabase
 		.from('transactions')
 		.select(

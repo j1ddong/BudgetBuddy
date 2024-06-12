@@ -17,9 +17,10 @@ import {
 	convertPieChartData,
 } from '../utils/convertDataStructure';
 import CategoryPieChart from '@/components/statistics/CategoryPieChart';
-import { supabase } from '../utils/supabase/authAdmin';
+import { createClient } from '../utils/supabase/client';
 
 const Statistics = () => {
+	const supabase = createClient();
 	const [dateInfo, setDateInfo] = useState<DateTime>(DateTime.now());
 
 	const manageMonthHandler = (num: number) => {
@@ -91,7 +92,7 @@ const Statistics = () => {
 		};
 
 		getMonthlyTransactions();
-	}, [dateInfo]);
+	}, [dateInfo, supabase]);
 
 	return (
 		<>
