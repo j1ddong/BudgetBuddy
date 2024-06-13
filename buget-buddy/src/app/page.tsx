@@ -1,5 +1,3 @@
-'use server';
-
 import Footer from '@/components/main/Footer';
 import DayMain from '@/components/main/Day.main';
 import { supabase } from './utils/supabase/authAdmin';

@@ -140,6 +140,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "deposit_transactions_account_to_fkey1"
+            columns: ["account_to"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "deposit_transactions_transaction_id_fkey"
             columns: ["transaction_id"]
             isOneToOne: false
@@ -150,23 +157,26 @@ export type Database = {
       }
       exchange_rates: {
         Row: {
+          created_at: string
           currency_from: string
           currency_to: string
-          datetime: string
+          date: string
           id: string
           rate: number
         }
         Insert: {
+          created_at?: string
           currency_from: string
           currency_to: string
-          datetime?: string
+          date: string
           id?: string
           rate: number
         }
         Update: {
+          created_at?: string
           currency_from?: string
           currency_to?: string
-          datetime?: string
+          date?: string
           id?: string
           rate?: number
         }
@@ -191,23 +201,29 @@ export type Database = {
         Row: {
           account_from: string
           account_to: string
-          from_amount: number
+          amount_from: number
+          amount_to: number
           id: string
-          to_amount: number
+          transaction_id_from: string
+          transaction_id_to: string
         }
         Insert: {
           account_from: string
           account_to: string
-          from_amount: number
+          amount_from: number
+          amount_to: number
           id?: string
-          to_amount: number
+          transaction_id_from: string
+          transaction_id_to: string
         }
         Update: {
           account_from?: string
           account_to?: string
-          from_amount?: number
+          amount_from?: number
+          amount_to?: number
           id?: string
-          to_amount?: number
+          transaction_id_from?: string
+          transaction_id_to?: string
         }
         Relationships: [
           {
@@ -222,6 +238,59 @@ export type Database = {
             columns: ["account_to"]
             isOneToOne: false
             referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exchange_transactions_transaction_id_from_fkey"
+            columns: ["transaction_id_from"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exchange_transactions_transaction_id_to_fkey"
+            columns: ["transaction_id_to"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exchange_transactions_exist: {
+        Row: {
+          created_at: string
+          currency_from: string
+          currency_to: string
+          date: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          currency_from: string
+          currency_to: string
+          date: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          currency_from?: string
+          currency_to?: string
+          date?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exchange_transactions_exist_from_currency_fkey"
+            columns: ["currency_from"]
+            isOneToOne: false
+            referencedRelation: "currencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exchange_transactions_exist_to_currency_fkey"
+            columns: ["currency_to"]
+            isOneToOne: false
+            referencedRelation: "currencies"
             referencedColumns: ["id"]
           },
         ]
@@ -266,22 +335,22 @@ export type Database = {
         Row: {
           account_id: string
           category_id: string
+          created_at: string
           date: string
-          datetime: string
           id: string
         }
         Insert: {
           account_id: string
           category_id: string
+          created_at?: string
           date: string
-          datetime?: string
           id?: string
         }
         Update: {
           account_id?: string
           category_id?: string
+          created_at?: string
           date?: string
-          datetime?: string
           id?: string
         }
         Relationships: [
@@ -307,40 +376,50 @@ export type Database = {
           account_to: string
           amount: number
           id: string
-          transaction_id: string
+          transaction_id_from: string
+          transaction_id_to: string
         }
         Insert: {
           account_from: string
           account_to: string
           amount: number
           id?: string
-          transaction_id: string
+          transaction_id_from: string
+          transaction_id_to: string
         }
         Update: {
           account_from?: string
           account_to?: string
           amount?: number
           id?: string
-          transaction_id?: string
+          transaction_id_from?: string
+          transaction_id_to?: string
         }
         Relationships: [
           {
-            foreignKeyName: "transfer_transactions_account_from_fkey"
+            foreignKeyName: "transfer_transactions_account_from_fkey1"
             columns: ["account_from"]
             isOneToOne: false
             referencedRelation: "accounts"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "transfer_transactions_account_to_fkey"
+            foreignKeyName: "transfer_transactions_account_to_fkey1"
             columns: ["account_to"]
             isOneToOne: false
             referencedRelation: "accounts"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "transfer_transactions_transaction_id_fkey"
-            columns: ["transaction_id"]
+            foreignKeyName: "transfer_transactions_transaction_id_from_fkey"
+            columns: ["transaction_id_from"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_transactions_transaction_id_to_fkey"
+            columns: ["transaction_id_to"]
             isOneToOne: false
             referencedRelation: "transactions"
             referencedColumns: ["id"]

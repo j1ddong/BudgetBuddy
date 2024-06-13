@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import SelectCategory from '@/components/statistics/SelectCategory';
 import Month from '@/components/statistics/Month';
 import MonthBarChart from '@/components/statistics/MonthBarChart';
-import { createClient } from '@/app/utils/supabase/client';
 import { fetchMonthlyTransactions } from '../utils/db';
 import {
 	categoryChartType,
@@ -18,6 +17,7 @@ import {
 	convertPieChartData,
 } from '../utils/convertDataStructure';
 import CategoryPieChart from '@/components/statistics/CategoryPieChart';
+import { createClient } from '../utils/supabase/client';
 
 const Statistics = () => {
 	const supabase = createClient();
@@ -33,6 +33,8 @@ const Statistics = () => {
 		useState<categoryChartType>([]);
 	const [monthlyDepositChartData, setDepositChartData] =
 		useState<categoryChartType>([]);
+	const [monthlyExchangeChartData, setExchangeChartData] =
+		useState<categoryChartType>([]);
 	const [monthlyAllChartData, setMonthlyAllChartData] =
 		useState<monthlyAllChartDataType>([]);
 
@@ -42,36 +44,50 @@ const Statistics = () => {
 	const [monthDepositPieData, setDepositPieData] = useState<categoryPieType>(
 		[]
 	);
+	const [monthExchangePieData, setExchangePieData] = useState<categoryPieType>(
+		[]
+	);
 	const [monthAllPieData, setMonthAllPieData] = useState<categoryPieType>([]);
 
 	useEffect(() => {
 		const getMonthlyTransactions = async () => {
-			const { monthlyExpenseTransactionData, monthlyDepositTransactionData } =
-				await fetchMonthlyTransactions(supabase, dateInfo);
+			const {
+				monthlyExpenseTransactionData,
+				monthlyDepositTransactionData,
+				monthlyExchangeTransactionData,
+			} = await fetchMonthlyTransactions(supabase, dateInfo);
 
 			const {
 				monthlyExpenseChartData,
 				monthlyDepositChartData,
+				monthlyExchangeChartData,
 				monthlyAllChartData,
 			} = convertBarChartData({
 				monthlyExpenseTransactionData,
 				monthlyDepositTransactionData,
+				monthlyExchangeTransactionData,
 				dateInfo,
 			});
 
 			setExpenseChartData(monthlyExpenseChartData);
 			setDepositChartData(monthlyDepositChartData);
+			setExchangeChartData(monthlyExchangeChartData);
 			setMonthlyAllChartData(monthlyAllChartData);
 
-			const { monthExpensePieData, monthDepositPieData, monthAllPieData } =
-				convertPieChartData({
-					monthlyExpenseTransactionData,
-					monthlyDepositTransactionData,
-					dateInfo,
-				});
-			console.log(monthExpensePieData);
+			const {
+				monthExpensePieData,
+				monthDepositPieData,
+				monthExchangePieData,
+				monthAllPieData,
+			} = convertPieChartData({
+				monthlyExpenseTransactionData,
+				monthlyDepositTransactionData,
+				monthlyExchangeTransactionData,
+				dateInfo,
+			});
 			setExpensePieData(monthExpensePieData);
 			setDepositPieData(monthDepositPieData);
+			setExchangePieData(monthExchangePieData);
 			setMonthAllPieData(monthAllPieData);
 		};
 
@@ -92,12 +108,14 @@ const Statistics = () => {
 				seletedCategory={seletedCategory}
 				expenseChartData={monthlyExpenseChartData}
 				depositChartData={monthlyDepositChartData}
+				exchangeChartData={monthlyExchangeChartData}
 				monthlyAllChartData={monthlyAllChartData}
 			/>
 			<CategoryPieChart
 				seletedCategory={seletedCategory}
 				monthExpensePieData={monthExpensePieData}
 				monthDepositPieData={monthDepositPieData}
+				monthExchangePieData={monthExchangePieData}
 				monthAllPieData={monthAllPieData}
 			/>
 			<Footer />

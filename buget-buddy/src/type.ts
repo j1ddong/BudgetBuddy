@@ -103,6 +103,7 @@ export type monthlyAllChartDataType = {
 	month: string;
 	expense: any;
 	deposit: any;
+	exchange: any;
 }[];
 
 export type monthCategorySum = {

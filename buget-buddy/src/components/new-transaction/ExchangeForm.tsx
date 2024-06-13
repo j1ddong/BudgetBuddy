@@ -7,8 +7,6 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 import { DateTime } from 'luxon';
-import { exchangeFormDBInsert } from '@/app/utils/db';
-import { supabase } from '@/app/utils/supabase/authAdmin';
 
 type ExchangeFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -31,8 +29,13 @@ const ExchangeForm = ({ accountInfo, type }: ExchangeFormPropsType) => {
 	});
 
 	const transferFormSubmit = exchangeForm.onSubmit(async (values) => {
-		await exchangeFormDBInsert(supabase, values, type);
-		router.push('/');
+		const { status } = await fetch('/api/transactions/exchange', {
+			method: 'POST',
+			body: JSON.stringify({ values, type: 'Exchange' }),
+		});
+		if (status === 200) return router.push('/');
+		alert('Please try it again');
+		return;
 	});
 
 	return (

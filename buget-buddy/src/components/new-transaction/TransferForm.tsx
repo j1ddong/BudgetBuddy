@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 import { selectDataMapType } from '@/type';
-import { supabase } from '@/app/utils/supabase/authAdmin';
+import { createClient } from '@/app/utils/supabase/client';
 
 type TransferFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -16,6 +16,7 @@ type TransferFormPropsType = {
 
 const TransferForm = ({ accountInfo, type }: TransferFormPropsType) => {
 	const router = useRouter();
+	const supabase = createClient();
 
 	const transferForm = useForm<transferForm>({
 		mode: 'uncontrolled',

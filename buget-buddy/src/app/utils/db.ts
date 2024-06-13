@@ -271,9 +271,9 @@ export const fetchMonthlyTransactions = async (
 	const { data: monthlyExpenseTransactionData } = await supabase
 		.from('transactions')
 		.select(
-			`date, id, 
-			categories(display_name, transaction_type), 
-			amount: expense_transactions!inner(amount)`
+			`date, id,
+		categories(display_name, transaction_type),
+		amount: expense_transactions!inner(amount)`
 		)
 		.gte('date', `${endYear}-${endMonth}-01`)
 		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
@@ -288,7 +288,22 @@ export const fetchMonthlyTransactions = async (
 		.gte('date', `${endYear}-${endMonth}-01`)
 		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
 
-	return { monthlyExpenseTransactionData, monthlyDepositTransactionData };
+	const { data: monthlyExchangeTransactionData } = await supabase
+		.from('transactions')
+		.select(
+			`date, id,
+		categories(display_name, transaction_type),
+		amount: exchange_transactions!exchange_transactions_transaction_id_to_fkey!inner(amount_to)
+		`
+		)
+		.gte('date', `${endYear}-${endMonth}-01`)
+		.lte('date', `${dateInfo.year}-${dateInfo.month}-${dateInfo.daysInMonth}`);
+
+	return {
+		monthlyExpenseTransactionData,
+		monthlyDepositTransactionData,
+		monthlyExchangeTransactionData,
+	};
 };
 
 export const insertNewExchangeData = async (

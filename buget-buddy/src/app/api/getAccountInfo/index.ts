@@ -1,10 +1,11 @@
+import { supabase } from '@/app/utils/supabase/authAdmin';
 import { createClient } from '@/app/utils/supabase/server';
 
 export const getAccountInfo = async () => {
-	const supabase = createClient();
+	const authSupabase = createClient();
 	const {
 		data: { user },
-	} = await supabase.auth.getUser();
+	} = await authSupabase.auth.getUser();
 
 	if (!user) {
 		return null;

@@ -96,11 +96,16 @@ const getMonthlyCategoryChartData = (
 		const monthIdx: number = Number(data.date.slice(5, 7));
 		const transactionType = data.categories.transaction_type;
 
+		let amount = 'amount';
+		if (transactionType === 'exchange') {
+			amount = 'amount_to';
+		}
+
 		if (monthlyCategorySum[monthIdx]) {
-			monthlyCategorySum[monthIdx][transactionType] += data.amount[0].amount;
+			monthlyCategorySum[monthIdx][transactionType] += data.amount[0][amount];
 		} else {
 			monthlyCategorySum[monthIdx] = {
-				[transactionType]: data.amount[0].amount,
+				[transactionType]: data.amount[0][amount],
 			};
 		}
 	});
@@ -116,13 +121,13 @@ const getMonthlyCategoryChartData = (
 			monthlyCategoryChartData.push({ month, [category]: 0 });
 		}
 	}
-
 	return monthlyCategoryChartData;
 };
 
 export const convertBarChartData = ({
 	monthlyExpenseTransactionData,
 	monthlyDepositTransactionData,
+	monthlyExchangeTransactionData,
 	dateInfo,
 }: any) => {
 	const monthlyExpenseChartData: categoryChartType =
@@ -137,17 +142,24 @@ export const convertBarChartData = ({
 			dateInfo,
 			'deposit'
 		);
+	const monthlyExchangeChartData: categoryChartType =
+		getMonthlyCategoryChartData(
+			monthlyExchangeTransactionData,
+			dateInfo,
+			'exchange'
+		);
 	const monthlyAllChartData: monthlyAllChartDataType = [];
 	for (let idx = 0; idx < 6; idx++) {
 		const month = monthlyExpenseChartData[idx].month;
 		const expense = monthlyExpenseChartData[idx].expense;
 		const deposit = monthlyDepositChartData[idx].deposit;
-		monthlyAllChartData.push({ month, expense, deposit });
+		const exchange = monthlyExchangeChartData[idx].exchange;
+		monthlyAllChartData.push({ month, expense, deposit, exchange });
 	}
-
 	return {
 		monthlyExpenseChartData,
 		monthlyDepositChartData,
+		monthlyExchangeChartData,
 		monthlyAllChartData,
 	};
 };
@@ -168,10 +180,14 @@ const getMonthCategoryPieData = (
 		if (currentMonth > dataMonth) {
 			return;
 		}
+		let amount = 'amount';
+		if (categoryType === 'Exchange') {
+			amount = 'amount_to';
+		}
 		if (monthCategorySum[categoryType]) {
-			monthCategorySum[categoryType] += data.amount[0].amount;
+			monthCategorySum[categoryType] += data.amount[0][amount];
 		} else {
-			monthCategorySum[categoryType] = data.amount[0].amount;
+			monthCategorySum[categoryType] = data.amount[0][amount];
 			categoryList.push(categoryType);
 		}
 	});
@@ -195,6 +211,7 @@ const getMonthCategoryPieData = (
 export const convertPieChartData = ({
 	monthlyExpenseTransactionData,
 	monthlyDepositTransactionData,
+	monthlyExchangeTransactionData,
 	dateInfo,
 }: any) => {
 	const colorIdx = 0;
@@ -207,7 +224,7 @@ export const convertPieChartData = ({
 
 	const {
 		monthCategoryPieData: monthDepositPieData,
-		returnColorIdx,
+		returnColorIdx: depositColorIdx,
 	}: { monthCategoryPieData: categoryPieType; returnColorIdx: number } =
 		getMonthCategoryPieData(
 			monthlyDepositTransactionData,
@@ -215,8 +232,22 @@ export const convertPieChartData = ({
 			expenseColorIdx
 		);
 
-	const monthAllPieData: categoryPieType =
-		monthExpensePieData.concat(monthDepositPieData);
+	const {
+		monthCategoryPieData: monthExchangePieData,
+	}: { monthCategoryPieData: categoryPieType } = getMonthCategoryPieData(
+		monthlyExchangeTransactionData,
+		dateInfo,
+		depositColorIdx
+	);
 
-	return { monthExpensePieData, monthDepositPieData, monthAllPieData };
+	const monthAllPieData: categoryPieType = monthExpensePieData.concat(
+		monthDepositPieData,
+		monthExchangePieData
+	);
+	return {
+		monthExpensePieData,
+		monthDepositPieData,
+		monthExchangePieData,
+		monthAllPieData,
+	};
 };

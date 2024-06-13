@@ -12,7 +12,7 @@ import {
 } from '@/app/utils/convertDataStructure';
 import { categoriesList } from '@/app/utils/const';
 import { DayDetailBoxPropsType, transactionHistoryType } from '@/type';
-import { supabase } from '@/app/utils/supabase/authAdmin';
+import { createClient } from '@/app/utils/supabase/client';
 
 const DayDetailBox = ({
 	year,
@@ -23,6 +23,7 @@ const DayDetailBox = ({
 }: DayDetailBoxPropsType) => {
 	const accountData = useAccountData();
 	const accountInfo = mapAccountData(accountData);
+	const supabase = createClient();
 
 	const [account, setAccount] = useState<string | null>(accountInfo[0].value);
 	const [category, setCategory] = useState<string | null>('expense');
