@@ -69,12 +69,11 @@ export type transactionDataType =
 	  }[]
 	| null;
 
-export type fetchDayCategoryTransactionsType = (
-	supabase: SupabaseClient,
+export type getDayCategoryTransactionsType = (
 	{
 		date: { year, month, day },
 	}: { date: { year: number; month: number; day: number } },
-	account_id: string | null,
+	account_id: string,
 	category: string | null
 ) => any;
 

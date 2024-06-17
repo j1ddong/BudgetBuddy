@@ -5,11 +5,9 @@ import {
 	depositExpenseFormSchema,
 	depositExpenseForm,
 } from '@/app/utils/formValidation';
-import { depositExpenseFormDBInsert } from '@/app/utils/db';
 import { useRouter } from 'next/navigation';
 import tranasactionStyle from '@/app/new-transaction/newTransaction.module.css';
 import { selectDataMapType } from '@/type';
-import { createClient } from '@/app/utils/supabase/client';
 
 type DepositExpenseFormPropsType = {
 	accountInfo: selectDataMapType;
@@ -21,7 +19,6 @@ const DepositExpenseForm = ({
 	type,
 }: DepositExpenseFormPropsType) => {
 	const router = useRouter();
-	const supabase = createClient();
 
 	const depositExpenseForm = useForm<depositExpenseForm>({
 		mode: 'uncontrolled',
@@ -35,8 +32,16 @@ const DepositExpenseForm = ({
 
 	const depositExpenseFormSubmit = depositExpenseForm.onSubmit(
 		async (values) => {
-			await depositExpenseFormDBInsert(supabase, values, type);
-			router.push('/');
+			const { status } = await fetch('/api/transactions/deposit_expense', {
+				method: 'POST',
+				body: JSON.stringify({ values, type }),
+			});
+			if (status === 200) {
+				alert('New transaction has been saved');
+				return router.push('/');
+			}
+			alert('Please try it again');
+			return;
 		}
 	);
 	return (

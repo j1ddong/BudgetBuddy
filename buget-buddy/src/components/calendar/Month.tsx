@@ -26,11 +26,13 @@ function makeWeekRows(
 	do {
 		weekRows[week] = [];
 		for (let i = 0; i < 7; i++) {
-			const dataIdx = `${date.year}-0${date.month}-${date.day}`;
+			const dateMonth = date.month < 10 ? '0' + date.month : date.month;
+			const dataIdx = `${date.year}-${dateMonth}-${date.day}`;
 			weekRows[week].push(
 				<CalendarDate
 					key={date.day}
 					date={date.day}
+					isSunday={date.weekday === 7}
 					isCurrMonth={date.month === month}
 					dateTransaction={dateTransactionDir[dataIdx]}
 				/>

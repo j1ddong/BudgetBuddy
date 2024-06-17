@@ -3,7 +3,6 @@
 import { Select, Text } from '@mantine/core';
 import mainStyles from '@/app/page.module.css';
 import { useEffect, useState } from 'react';
-import { fetchDayCategoryTransactions } from '@/app/utils/db';
 import { useAccountData } from '@/contexts/accountContext/accountContext.provider';
 import {
 	getCurrency,
@@ -38,21 +37,18 @@ const DayDetailBox = ({
 	useEffect(() => {
 		setCurrency(getCurrency(account, accountData));
 		const getDayCategoryTransactions = async () => {
-			const { data: transactionData } = await fetchDayCategoryTransactions(
-				supabase,
-				{ date: { year, month, day } },
-				account,
-				category
-			);
-
+			const res = await fetch('/api/transactions/day', {
+				method: 'POST',
+				body: JSON.stringify({ date: { year, month, day }, account, category }),
+			});
+			const { data: transactionData } = await res.json();
 			const { categoryHistory, totalAmount } =
 				mapCategoryTransactionDataAndGetTotalAmount(transactionData, category);
-
 			setTransactionHistory(categoryHistory);
 			setAmount(totalAmount);
 		};
 		getDayCategoryTransactions();
-	}, [day, month, year, category, account, accountData]);
+	}, [day, month, year, category, account, accountData, supabase]);
 
 	return (
 		<>
