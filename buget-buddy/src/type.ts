@@ -115,3 +115,12 @@ export type categoryPieType = {
 	value: number;
 	color: string;
 }[];
+
+export type DateTransactionDirDataType = {
+	amount: any;
+	category: string;
+}[];
+
+export type DateTransactionDirType = {
+	[date: string]: DateTransactionDirDataType;
+};

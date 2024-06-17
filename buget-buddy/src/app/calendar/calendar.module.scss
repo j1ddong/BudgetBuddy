@@ -1,0 +1,37 @@
+.calendar {
+	:global {
+		.header-section > div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.header-section h1 {
+			padding: 0 1rem;
+		}
+		.header-section p:hover {
+			cursor: pointer;
+		}
+
+		.day-row {
+			display: flex;
+
+			div {
+				width: calc(100% / 7);
+				padding: 1rem;
+			}
+		}
+
+		.week-row {
+			display: flex;
+
+			.date {
+				width: calc(100% / 7);
+				padding: 1rem 1rem 3rem 1rem;
+
+				&.out-month {
+					color: #c8c8c8;
+				}
+			}
+		}
+	}
+}

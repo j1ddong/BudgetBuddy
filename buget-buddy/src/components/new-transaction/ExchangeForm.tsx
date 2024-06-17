@@ -24,6 +24,7 @@ const ExchangeForm = ({ accountInfo, type }: ExchangeFormPropsType) => {
 			account_to: '',
 			amount_from: 0,
 			amount_to: 0,
+			exchanged_at: '',
 		},
 		validate: zodResolver(exchangeFormSchema),
 	});
@@ -33,7 +34,10 @@ const ExchangeForm = ({ accountInfo, type }: ExchangeFormPropsType) => {
 			method: 'POST',
 			body: JSON.stringify({ values, type: 'Exchange' }),
 		});
-		if (status === 200) return router.push('/');
+		if (status === 200) {
+			alert('New transaction has been saved');
+			return router.push('/');
+		}
 		alert('Please try it again');
 		return;
 	});
@@ -84,6 +88,11 @@ const ExchangeForm = ({ accountInfo, type }: ExchangeFormPropsType) => {
 					thousandSeparator=','
 					key={exchangeForm.key('amount_to')}
 					{...exchangeForm.getInputProps('amount_to')}
+				/>
+				<TextInput
+					label='Exchanged at'
+					key={exchangeForm.key('exchanged_at')}
+					{...exchangeForm.getInputProps('exchanged_at')}
 				/>
 				<Button className={tranasactionStyle.btn} fullWidth type='submit'>
 					ADD
