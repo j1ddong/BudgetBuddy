@@ -1,5 +1,5 @@
 'use client';
-import { transferFormDBInsert } from '@/app/utils/db';
+
 import { transferFormSchema, transferForm } from '@/app/utils/formValidation';
 import { Button, NumberInput, Select, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
@@ -16,7 +16,6 @@ type TransferFormPropsType = {
 
 const TransferForm = ({ accountInfo, type }: TransferFormPropsType) => {
 	const router = useRouter();
-	const supabase = createClient();
 
 	const transferForm = useForm<transferForm>({
 		mode: 'uncontrolled',
@@ -30,8 +29,16 @@ const TransferForm = ({ accountInfo, type }: TransferFormPropsType) => {
 	});
 
 	const transferFormSubmit = transferForm.onSubmit(async (values) => {
-		await transferFormDBInsert(supabase, values, type);
-		router.push('/');
+		const { status } = await fetch('/api/transactions/transfer', {
+			method: 'POST',
+			body: JSON.stringify({ values, type }),
+		});
+		if (status === 200) {
+			alert('New transaction has been saved');
+			return router.push('/');
+		}
+		alert('Please try it again');
+		return;
 	});
 
 	return (

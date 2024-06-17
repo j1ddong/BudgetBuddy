@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import SelectCategory from '@/components/statistics/SelectCategory';
 import Month from '@/components/statistics/Month';
 import MonthBarChart from '@/components/statistics/MonthBarChart';
-import { fetchMonthlyTransactions } from '../utils/db';
 import {
 	categoryChartType,
 	categoryPieType,
@@ -51,12 +50,15 @@ const Statistics = () => {
 
 	useEffect(() => {
 		const getMonthlyTransactions = async () => {
+			const res = await fetch('/api/transactions/monthly', {
+				method: 'POST',
+				body: JSON.stringify({ dateInfo }),
+			});
 			const {
 				monthlyExpenseTransactionData,
 				monthlyDepositTransactionData,
 				monthlyExchangeTransactionData,
-			} = await fetchMonthlyTransactions(supabase, dateInfo);
-
+			} = await res.json();
 			const {
 				monthlyExpenseChartData,
 				monthlyDepositChartData,
