@@ -9,6 +9,7 @@ export const insertExchangeTransaction = async (
 		account_from: string;
 		amount_from: number;
 		amount_to: number;
+		exchanged_at: string;
 	},
 	type: string
 ) => {
@@ -43,6 +44,7 @@ export const insertExchangeTransaction = async (
 			transaction_id_to: newTransactionToData!.id,
 			amount_from: values.amount_from,
 			amount_to: values.amount_to,
+			exchanged_at: values.exchanged_at,
 		});
 
 	if (newExchangeInsertError) return newExchangeInsertError;

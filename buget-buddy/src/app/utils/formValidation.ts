@@ -64,6 +64,7 @@ export const exchangeFormSchema = z.object({
 	account_to: z.string(),
 	amount_from: z.number(),
 	amount_to: z.number(),
+	exchanged_at: z.string(),
 });
 
 export type exchangeForm = z.infer<typeof exchangeFormSchema>;
