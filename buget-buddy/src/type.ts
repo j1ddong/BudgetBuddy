@@ -118,8 +118,17 @@ export type categoryPieType = {
 export type DateTransactionDirDataType = {
 	amount: any;
 	category: string;
+	transaction_type: string;
 }[];
 
 export type DateTransactionDirType = {
-	[date: string]: DateTransactionDirDataType;
+	[date: string]: {
+		dayDeposit: number;
+		dayExpense: number;
+		detail: DateTransactionDirDataType;
+	};
+};
+export type TotalAmountDirType = {
+	totalDeposit: number;
+	totalExpense: number;
 };

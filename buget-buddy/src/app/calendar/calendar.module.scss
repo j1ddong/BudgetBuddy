@@ -11,6 +11,11 @@
 		.header-section p:hover {
 			cursor: pointer;
 		}
+		.total-amount {
+			display: flex;
+			justify-content: space-around;
+			padding: 1rem 0;
+		}
 
 		.day-row {
 			display: flex;
@@ -26,7 +31,8 @@
 
 			.date {
 				width: calc(100% / 7);
-				padding: 1rem 1rem 3rem 1rem;
+				height: 5rem;
+				padding: 1rem;
 
 				&.sunday {
 					color: red;
@@ -34,6 +40,14 @@
 				&.out-month {
 					color: #c8c8c8;
 				}
+			}
+			.deposit {
+				font-weight: bold;
+				color: #0080ff;
+			}
+			.expense {
+				font-weight: bold;
+				color: #dc143c;
 			}
 		}
 	}

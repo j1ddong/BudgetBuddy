@@ -1,6 +1,6 @@
 'use client';
 
-import { DateTransactionDirType } from '@/type';
+import { DateTransactionDirType, TotalAmountDirType } from '@/type';
 import {
 	Dispatch,
 	ReactNode,
@@ -10,7 +10,10 @@ import {
 	useState,
 } from 'react';
 
-type MonthTransactionDataContextType = DateTransactionDirType;
+type MonthTransactionDataContextType = {
+	dateTransactionDir: DateTransactionDirType;
+	totalAmountDir: TotalAmountDirType;
+};
 
 const MonthTransactionDataContext = createContext<
 	MonthTransactionDataContextType | undefined
@@ -45,7 +48,7 @@ export const useSetMonthTransactionData = () => {
 
 type MonthTransactionDataContextProviderProps = {
 	children: ReactNode;
-	initialData: DateTransactionDirType;
+	initialData: MonthTransactionDataContextType;
 };
 
 const MonthTransactionDataContextProviderComponent = ({
