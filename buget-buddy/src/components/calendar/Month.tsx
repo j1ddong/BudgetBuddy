@@ -46,8 +46,7 @@ function makeWeekRows(
 }
 
 const Month = ({ year, month }: CalendarMonthProps) => {
-	const dateTransactionDir = useMonthTransactionData();
-
+	const { dateTransactionDir } = useMonthTransactionData();
 	return (
 		<>
 			<div>
