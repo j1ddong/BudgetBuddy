@@ -1,19 +1,21 @@
 import { categoryChartType, monthlyAllChartDataType } from '@/type';
 import { BarChart } from '@mantine/charts';
+import ExchangeStatistics from './Exchange.statistics';
+import { DateTime } from 'luxon';
 
 type MonthBarChartPropsType = {
 	seletedCategory: string;
+	dateInfo: DateTime;
 	expenseChartData: categoryChartType;
 	depositChartData: categoryChartType;
-	exchangeChartData: categoryChartType;
 	monthlyAllChartData: monthlyAllChartDataType;
 };
 
 const MonthBarChart = ({
 	seletedCategory,
+	dateInfo,
 	expenseChartData,
 	depositChartData,
-	exchangeChartData,
 	monthlyAllChartData,
 }: MonthBarChartPropsType) => {
 	const setChartData = (seletedCategory: string) => {
@@ -24,10 +26,14 @@ const MonthBarChart = ({
 		} else if (seletedCategory === 'Deposit') {
 			return depositChartData;
 		} else if (seletedCategory === 'Exchange') {
-			return exchangeChartData;
+			return [];
 		}
 		return [];
 	};
+
+	if (seletedCategory === 'Exchange') {
+		return <ExchangeStatistics dateInfo={dateInfo} />;
+	}
 
 	return (
 		<BarChart
@@ -37,7 +43,6 @@ const MonthBarChart = ({
 			series={[
 				{ name: 'deposit', color: 'violet.6' },
 				{ name: 'expense', color: 'blue.6' },
-				{ name: 'exchange', color: 'green.6' },
 			]}
 			tickLine='y'
 		/>

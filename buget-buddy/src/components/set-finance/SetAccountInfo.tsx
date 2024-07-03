@@ -116,42 +116,44 @@ const SetAccountInfo = () => {
 	return (
 		<>
 			<h3 className={accountStyles.accountText}>New Account</h3>
-			<form onSubmit={submitAcoountInfo}>
-				<Select
-					label='Currency'
-					required
-					withAsterisk
-					searchable
-					data={currencyTypeData}
-					key={form.key('currency')}
-					{...form.getInputProps('currency')}
-				/>
-				<Select
-					label='Account type'
-					required
-					withAsterisk
-					data={accountTypeData}
-					key={form.key('accountType')}
-					{...form.getInputProps('accountType')}
-				/>
-				<TextInput
-					label='Account name'
-					required
-					withAsterisk
-					key={form.key('accountName')}
-					{...form.getInputProps('accountName')}
-				/>
-				<NumberInput
-					label='Set your balance'
-					withAsterisk
-					required
-					min={0}
-					allowNegative={false}
-					decimalScale={2}
-					thousandSeparator=','
-					key={form.key('balance')}
-					{...form.getInputProps('balance')}
-				/>
+			<form className={accountStyles.form} onSubmit={submitAcoountInfo}>
+				<div>
+					<Select
+						label='Currency'
+						required
+						withAsterisk
+						searchable
+						data={currencyTypeData}
+						key={form.key('currency')}
+						{...form.getInputProps('currency')}
+					/>
+					<Select
+						label='Account type'
+						required
+						withAsterisk
+						data={accountTypeData}
+						key={form.key('accountType')}
+						{...form.getInputProps('accountType')}
+					/>
+					<TextInput
+						label='Account name'
+						required
+						withAsterisk
+						key={form.key('accountName')}
+						{...form.getInputProps('accountName')}
+					/>
+					<NumberInput
+						label='Set your balance'
+						withAsterisk
+						required
+						min={0}
+						allowNegative={false}
+						decimalScale={2}
+						thousandSeparator=','
+						key={form.key('balance')}
+						{...form.getInputProps('balance')}
+					/>
+				</div>
 				<Button className={styles.btn} type='submit' fullWidth>
 					Add
 				</Button>

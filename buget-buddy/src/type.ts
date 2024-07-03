@@ -102,7 +102,6 @@ export type monthlyAllChartDataType = {
 	month: string;
 	expense: any;
 	deposit: any;
-	exchange: any;
 }[];
 
 export type monthCategorySum = {
@@ -132,3 +131,14 @@ export type TotalAmountDirType = {
 	totalDeposit: number;
 	totalExpense: number;
 };
+
+export type MonthExchangeTransactionDataType =
+	| {
+			id: string;
+			exchange_transactions: {
+				amount_to: number;
+				account_from: string;
+				account_to: string;
+			}[];
+	  }[]
+	| null;
