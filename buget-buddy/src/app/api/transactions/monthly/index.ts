@@ -127,7 +127,7 @@ export const getMonthExchangeRate = async (
 		.eq('currency_from', currency_from)
 		.eq('currency_to', currency_to)
 		.gte('date', dateInfo.startOf('month').toISODate())
-		.lte('date', dateInfo.endOf('month').toISODate());
-	console.log(data);
+		.lte('date', dateInfo.endOf('month').toISODate())
+		.order('date', { ascending: true });
 	return data;
 };

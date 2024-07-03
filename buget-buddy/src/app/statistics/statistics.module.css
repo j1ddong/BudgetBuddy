@@ -29,3 +29,10 @@
 	width: 7.5rem;
 	cursor: pointer;
 }
+.otherExchangeBox {
+	padding-top: 1rem;
+	text-align: center;
+}
+.otherExchangeBox > p {
+	padding-top: 1rem;
+}
