@@ -18,3 +18,14 @@
 	text-align: center;
 	margin-top: 10px;
 }
+.exchangeCurrency {
+	border-top: 1px solid black;
+	padding: 1rem 0;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+.exchangeCurrency > b {
+	display: inline-block;
+	width: 7.5rem;
+	cursor: pointer;
+}

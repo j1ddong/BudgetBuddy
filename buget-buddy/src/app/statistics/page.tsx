@@ -32,8 +32,6 @@ const Statistics = () => {
 		useState<categoryChartType>([]);
 	const [monthlyDepositChartData, setDepositChartData] =
 		useState<categoryChartType>([]);
-	const [monthlyExchangeChartData, setExchangeChartData] =
-		useState<categoryChartType>([]);
 	const [monthlyAllChartData, setMonthlyAllChartData] =
 		useState<monthlyAllChartDataType>([]);
 
@@ -41,9 +39,6 @@ const Statistics = () => {
 		[]
 	);
 	const [monthDepositPieData, setDepositPieData] = useState<categoryPieType>(
-		[]
-	);
-	const [monthExchangePieData, setExchangePieData] = useState<categoryPieType>(
 		[]
 	);
 	const [monthAllPieData, setMonthAllPieData] = useState<categoryPieType>([]);
@@ -54,42 +49,30 @@ const Statistics = () => {
 				method: 'POST',
 				body: JSON.stringify({ dateInfo }),
 			});
-			const {
-				monthlyExpenseTransactionData,
-				monthlyDepositTransactionData,
-				monthlyExchangeTransactionData,
-			} = await res.json();
+			const { monthlyExpenseTransactionData, monthlyDepositTransactionData } =
+				await res.json();
 			const {
 				monthlyExpenseChartData,
 				monthlyDepositChartData,
-				monthlyExchangeChartData,
 				monthlyAllChartData,
 			} = convertBarChartData({
 				monthlyExpenseTransactionData,
 				monthlyDepositTransactionData,
-				monthlyExchangeTransactionData,
 				dateInfo,
 			});
 
 			setExpenseChartData(monthlyExpenseChartData);
 			setDepositChartData(monthlyDepositChartData);
-			setExchangeChartData(monthlyExchangeChartData);
 			setMonthlyAllChartData(monthlyAllChartData);
 
-			const {
-				monthExpensePieData,
-				monthDepositPieData,
-				monthExchangePieData,
-				monthAllPieData,
-			} = convertPieChartData({
-				monthlyExpenseTransactionData,
-				monthlyDepositTransactionData,
-				monthlyExchangeTransactionData,
-				dateInfo,
-			});
+			const { monthExpensePieData, monthDepositPieData, monthAllPieData } =
+				convertPieChartData({
+					monthlyExpenseTransactionData,
+					monthlyDepositTransactionData,
+					dateInfo,
+				});
 			setExpensePieData(monthExpensePieData);
 			setDepositPieData(monthDepositPieData);
-			setExchangePieData(monthExchangePieData);
 			setMonthAllPieData(monthAllPieData);
 		};
 
@@ -108,16 +91,15 @@ const Statistics = () => {
 			/>
 			<MonthBarChart
 				seletedCategory={seletedCategory}
+				dateInfo={dateInfo}
 				expenseChartData={monthlyExpenseChartData}
 				depositChartData={monthlyDepositChartData}
-				exchangeChartData={monthlyExchangeChartData}
 				monthlyAllChartData={monthlyAllChartData}
 			/>
 			<CategoryPieChart
 				seletedCategory={seletedCategory}
 				monthExpensePieData={monthExpensePieData}
 				monthDepositPieData={monthDepositPieData}
-				monthExchangePieData={monthExchangePieData}
 				monthAllPieData={monthAllPieData}
 			/>
 			<Footer />

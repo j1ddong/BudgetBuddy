@@ -4,12 +4,13 @@ import { cx } from '@/app/utils/classname.utils';
 import { Popover, Text } from '@mantine/core';
 import { DateTransactionDirDataType } from '@/type';
 import { useDisclosure } from '@mantine/hooks';
+import styles from '@/app/calendar/calendar.module.scss';
 
 type CalendarDateProps = {
 	date: number;
 	isSunday: boolean;
 	isCurrMonth: boolean;
-	dateTransaction: {
+	dateTransaction?: {
 		dayDeposit: number;
 		dayExpense: number;
 		detail: DateTransactionDirDataType;
@@ -52,11 +53,11 @@ const Date = ({
 				{dateTransaction && (
 					<Popover.Dropdown style={{ pointerEvents: 'none' }}>
 						{dateTransaction.detail.map((transaction, idx) => (
-							<div key={idx}>
-								<Text size='sm'>
+							<div className={styles.dateTransactionPopover} key={idx}>
+								<Text truncate='end' size='sm'>
 									{transaction.category}
-									{transaction.amount}
 								</Text>
+								<Text size='sm'>{transaction.amount}</Text>
 							</div>
 						))}
 					</Popover.Dropdown>

@@ -7,6 +7,7 @@ import {
 	transactionHistoryType,
 	monthCategorySum,
 	categoryPieType,
+	MonthExchangeTransactionDataType,
 } from '@/type';
 import { DateTime } from 'luxon';
 import { COLORS, months } from './const';
@@ -127,7 +128,6 @@ const getMonthlyCategoryChartData = (
 export const convertBarChartData = ({
 	monthlyExpenseTransactionData,
 	monthlyDepositTransactionData,
-	monthlyExchangeTransactionData,
 	dateInfo,
 }: any) => {
 	const monthlyExpenseChartData: categoryChartType =
@@ -142,24 +142,17 @@ export const convertBarChartData = ({
 			dateInfo,
 			'deposit'
 		);
-	const monthlyExchangeChartData: categoryChartType =
-		getMonthlyCategoryChartData(
-			monthlyExchangeTransactionData,
-			dateInfo,
-			'exchange'
-		);
+
 	const monthlyAllChartData: monthlyAllChartDataType = [];
 	for (let idx = 0; idx < 6; idx++) {
 		const month = monthlyExpenseChartData[idx].month;
 		const expense = monthlyExpenseChartData[idx].expense;
 		const deposit = monthlyDepositChartData[idx].deposit;
-		const exchange = monthlyExchangeChartData[idx].exchange;
-		monthlyAllChartData.push({ month, expense, deposit, exchange });
+		monthlyAllChartData.push({ month, expense, deposit });
 	}
 	return {
 		monthlyExpenseChartData,
 		monthlyDepositChartData,
-		monthlyExchangeChartData,
 		monthlyAllChartData,
 	};
 };

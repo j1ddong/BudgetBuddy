@@ -1,11 +1,13 @@
 'use client';
 
 import styles from '@/app/page.module.css';
+import accountStyles from '@/app/set-finance/account.module.css';
 import { Button, NumberInput } from '@mantine/core';
 import { createClient } from '../utils/supabase/client';
 import SetAccountInfo from '@/components/set-finance/SetAccountInfo';
 import { useForm, zodResolver } from '@mantine/form';
 import { budgetForm, budgetFormSchema } from '../utils/formValidation';
+import Link from 'next/link';
 
 const SetFinance = () => {
 	const supabase = createClient();
@@ -36,8 +38,10 @@ const SetFinance = () => {
 
 	return (
 		<div>
-			<h2 className={styles.appName}>BudgetBuddy</h2>
-			<form onSubmit={submitBudget}>
+			<Link href='/'>
+				<h2 className={styles.appName}>BudgetBuddy</h2>
+			</Link>
+			<form className={accountStyles.form} onSubmit={submitBudget}>
 				<NumberInput
 					label='Set your budget'
 					min={0}
@@ -47,7 +51,7 @@ const SetFinance = () => {
 					key={form.key('budget')}
 					{...form.getInputProps('budget')}
 				/>
-				<Button className={styles.btn} type='submit' fullWidth>
+				<Button type='submit' fullWidth>
 					Set
 				</Button>
 			</form>
