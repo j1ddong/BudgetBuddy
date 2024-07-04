@@ -26,7 +26,7 @@
 	margin: 0 10px;
 }
 .transactionDetailContainer {
-	height: 53vh;
+	height: 40vh;
 	overflow-y: auto;
 	border: 1px solid var(--gray-color);
 	padding: 10px;
