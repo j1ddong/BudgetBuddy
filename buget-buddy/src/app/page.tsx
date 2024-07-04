@@ -24,7 +24,6 @@ const Home = async () => {
 	);
 	const { categoryHistory, totalAmount } =
 		mapCategoryTransactionDataAndGetTotalAmount(transactionData, 'expense');
-	console.log(categoryHistory);
 	return (
 		<>
 			<DayMain categoryHistory={categoryHistory} totalAmount={totalAmount} />

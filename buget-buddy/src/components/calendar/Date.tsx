@@ -23,6 +23,7 @@ const Date = ({
 	isCurrMonth,
 	dateTransaction,
 }: CalendarDateProps) => {
+	console.log(dateTransaction);
 	const [opened, { close, open }] = useDisclosure(false);
 	return (
 		<>

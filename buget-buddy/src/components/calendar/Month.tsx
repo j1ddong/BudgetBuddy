@@ -27,7 +27,9 @@ function makeWeekRows(
 		weekRows[week] = [];
 		for (let i = 0; i < 7; i++) {
 			const dateMonth = date.month < 10 ? '0' + date.month : date.month;
-			const dataIdx = `${date.year}-${dateMonth}-${date.day}`;
+			const dateDay = date.day < 10 ? '0' + date.day : date.day;
+			const dataIdx = `${date.year}-${dateMonth}-${dateDay}`;
+
 			weekRows[week].push(
 				<CalendarDate
 					key={date.day}
