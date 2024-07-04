@@ -3,6 +3,7 @@ import { LineChart } from '@mantine/charts';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
 import statisticsStyles from '@/app/statistics/statistics.module.css';
+import { NumberInput } from '@mantine/core';
 
 type CurrencyChartProps = {
 	dateInfo: DateTime;
@@ -26,6 +27,7 @@ const CurrencyChart = ({
 		lowestRate: 0,
 		averageRate: 0,
 	});
+	const [inputValue, setInputValue] = useState<string | number>('');
 
 	useEffect(() => {
 		const getExchangeCurrencyRate = async () => {
@@ -65,6 +67,8 @@ const CurrencyChart = ({
 			getOtherExchangeCurrencyRate();
 		}
 	}, [dateInfo, selectedCurrency, selectedCurrencyExchangeData, toCurrency]);
+	const minRange = (othersRateStatistics.lowestRate * 0.95).toFixed(2);
+	const maxRange = (othersRateStatistics.highestRate * 1.05).toFixed(2);
 
 	return (
 		<div>
@@ -80,22 +84,42 @@ const CurrencyChart = ({
 					dataKey='date'
 					series={[{ name: `${toCurrency}`, color: 'indigo.6' }]}
 					curveType='linear'
+					yAxisProps={{
+						domain: [Number(minRange), Number(maxRange)],
+					}}
 				/>
 			)}
+			<div className={statisticsStyles.exchangeInput}>
+				<p>Amount</p>
+				<NumberInput
+					value={inputValue}
+					onChange={setInputValue}
+					allowNegative={false}
+					size='sm'
+				/>
+			</div>
 			{rateStatisticData.length > 0 && (
 				<div className={statisticsStyles.otherExchangeBox}>
 					<p>For a month Others exchanged at</p>
 					<p>
 						<b>Highest Rate: </b>
-						{othersRateStatistics.highestRate}
+						{othersRateStatistics.highestRate} {'  '}
+						{inputValue &&
+							Number(inputValue) * othersRateStatistics.highestRate +
+								toCurrency}
 					</p>
 					<p>
 						<b>Lowest Rate: </b>
-						{othersRateStatistics.lowestRate}
+						{othersRateStatistics.lowestRate} {'  '}
+						{inputValue &&
+							Number(inputValue) * othersRateStatistics.lowestRate + toCurrency}
 					</p>
 					<p>
 						<b>Average Rate: </b>
-						{othersRateStatistics.averageRate}
+						{othersRateStatistics.averageRate} {'  '}
+						{inputValue &&
+							Number(inputValue) * othersRateStatistics.averageRate +
+								toCurrency}
 					</p>
 				</div>
 			)}

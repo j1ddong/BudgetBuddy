@@ -30,9 +30,15 @@
 	cursor: pointer;
 }
 .otherExchangeBox {
-	padding-top: 1rem;
 	text-align: center;
 }
 .otherExchangeBox > p {
+	padding-top: 1rem;
+}
+.exchangeInput {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
 	padding-top: 1rem;
 }
